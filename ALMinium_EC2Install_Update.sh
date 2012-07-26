@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Additional Paramater
-## ALMinium ƒT[ƒo[‚Ì HOSTNAME
+## ALMinium ã‚µãƒ¼ãƒãƒ¼ã® HOSTNAME
 ALMHOSTNAME=
 
 ## Amazon S3 Bucket Name
@@ -34,19 +34,19 @@ SMTPUser=
 ## Amazon SES Password
 SMTPPass=
 
-## s3fs ‚Ì tar.gzƒo[ƒWƒ‡ƒ“
+## s3fs ã® tar.gzãƒãƒ¼ã‚¸ãƒ§ãƒ³
 s3fs_var=1.61
 
 
-# •K—v‚ÈRPMƒpƒbƒP[ƒW‚ÌƒCƒ“ƒXƒg[ƒ‹
+# å¿…è¦ãªRPMãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
 ## for s3fs
 yum -y install subversion make automake gcc libstdc++-devel gcc-c++ fuse fuse-devel curl-devel curl-devel libxml2-devel openssl-devel mailcap
 ## for alminium
 yum -y install git
 
 
-# s3fs‚ÌƒCƒ“ƒXƒg[ƒ‹
-# svnƒCƒ“ƒXƒg[ƒ‹‚ÍƒoƒO‚¿ 20120718
+# s3fsã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
+# svnã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã¯ãƒã‚°æŒã¡ 20120718
 cd /usr/local/src
 wget http://s3fs.googlecode.com/files/s3fs-$s3fs_var.tar.gz
 tar xvzf s3fs-$s3fs_var.tar.gz
@@ -56,29 +56,29 @@ make
 make install
 rm -rf /usr/local/src/s3fs-$s3fs_var.tar.gz
 
-# Amazon S3ƒL[ƒtƒ@ƒCƒ‹ì¬Aƒp[ƒ~ƒbƒVƒ‡ƒ“İ’è
+# Amazon S3ã‚­ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆã€ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³è¨­å®š
 #echo <bukketID>:<AccessKey>:<SeacretKey> > /etc/passwd-s3fs
 echo $BucketName:$AccessKey:$SecretAccessKey > /etc/passwd-s3fs
 chmod 640 /etc/passwd-s3fs
 
-#alminium‚ÌƒCƒ“ƒXƒg[ƒ‹
-## ƒ_ƒEƒ“ƒ[ƒh
+#alminiumã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
+## ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
 cd /usr/local/src
 git clone https://github.com/alminium/alminium.git
 
-## ƒCƒ“ƒXƒg[ƒ‹ƒpƒ‰ƒ[ƒ^[İ’è
+## ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼è¨­å®š
 ### HOSTNAME
 sed -i -e 's/read HOSTNAME/HOSTNAME='"$ALMHOSTNAME"'/' /usr/local/src/alminium/smelt
 ### SSL Support
 sed -i -e 's/read SSL/SSL=N/' /usr/local/src/alminium/smelt
-### SELINUX‰ğœ
+### SELINUXè§£é™¤
 sed -i -e 's/read USE_DISABLE_SECURITY/USE_DISABLE_SECURITY=Y/' /usr/local/src/alminium/inst-script/rhel6/pre-install
 
-## ƒCƒ“ƒXƒg[ƒ‹Às
+## ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«å®Ÿè¡Œ
 cd /usr/local/src/alminium
 bash ./smelt
 
-# Amazon S3ƒ}ƒEƒ“ƒgAƒVƒ“ƒ{ƒŠƒbƒNƒŠƒ“ƒNì¬
+# Amazon S3ãƒã‚¦ãƒ³ãƒˆã€ã‚·ãƒ³ãƒœãƒªãƒƒã‚¯ãƒªãƒ³ã‚¯ä½œæˆ
 # s3fs <bukketID> /mnt/s3
 mkdir -p /mnt/s3
 s3fs $BucketName /mnt/s3 -o allow_other -o allow_other,default_acl=public-read
@@ -91,20 +91,20 @@ rm -rf /opt/alminium/files
 ln -s /mnt/s3/alminium /var/opt/alminium
 ln -s /mnt/s3/files /opt/alminium/files
 
-# ©“®ƒ}ƒEƒ“ƒgİ’è
+# è‡ªå‹•ãƒã‚¦ãƒ³ãƒˆè¨­å®š
 # echo "/usr/bin/s3fs#<Bucket Name> /mnt/s3 fuse allow_other,default_acl=public-read 0 0" >> /etc/fstab
 echo "/usr/bin/s3fs#$BucketName /mnt/s3 fuse allow_other,default_acl=public-read 0 0" >> /etc/fstab
 
-## DB‚ğƒ_ƒ“ƒv
+## DBã‚’ãƒ€ãƒ³ãƒ—
 cd /usr/local/src
 #mysqldump -u root alminium > /usr/local/src/dump.sql
 
-## DB‚ğRDS‚É“ü‚ê‚é
+## DBã‚’RDSã«å…¥ã‚Œã‚‹
 # mysql -h <RDS Host Name> <DB Name> -u<userid>  -p<passwd> < /usr/local/src/dump.sql/dump.sql
 #mysql -h "$RDSENDNAME" "$RDSDBNAME" -u"$RDSUser"  -p"$RDSPass" < /usr/local/src/dump.sql
 #rm -rf /usr/local/src/dump.sql
 
-## DBÚ‘±•ÏX
+## DBæ¥ç¶šå¤‰æ›´
 echo -e "production-sqlite:
   adapter: sqlite3
   database: db/alminium.sqlite3
@@ -117,11 +117,11 @@ production:
   password: $RDSPass
   encoding: utf8" > /opt/alminium/config/database.yml
 
-## ƒ[ƒJƒ‹DBƒT[ƒo[’â~
+## ãƒ­ãƒ¼ã‚«ãƒ«DBã‚µãƒ¼ãƒãƒ¼åœæ­¢
 service mysqld stop
 chkconfig mysqld off
 
-## ƒ[ƒ‹Ú‘±İ’è‚Ìì¬
+## ãƒ¡ãƒ¼ãƒ«æ¥ç¶šè¨­å®šã®ä½œæˆ
 echo -e "default:
  email_delivery:
     delivery_method: :smtp
@@ -134,19 +134,19 @@ echo -e "default:
       user_name: $SMTPUser
       password: $SMTPPass" > /opt/alminium/config/configuration.yml
 
-## ”FØDBÚ‘±İ’è•ÏX
+## èªè¨¼DBæ¥ç¶šè¨­å®šå¤‰æ›´
 sed -i -e 's/DBI:mysql:database=alminium;host=localhost/DBI:mysql:database='"$RDSDBNAME"';host='"$RDSENDNAME"'/' /etc/httpd/conf.d/vcs.conf
 sed -i -e 's/RedmineDbUser "alminium"/RedmineDbUser "'"$RDSUser"'"/' /etc/httpd/conf.d/vcs.conf
 sed -i -e 's/RedmineDbPass "alminium"/RedmineDbPass "'"$RDSPass"'"/' /etc/httpd/conf.d/vcs.conf
 
-## SSL.conf‚Ì‹Lq
+## SSL.confã®è¨˜è¿°
 # sed -i -e 's/#ServerName www.example.com:443/ServerName '"$ALMHOSTNAME"':443/' /etc/httpd/conf.d/ssl.conf
 
-## httpdÄ‹N“®
+## httpdå†èµ·å‹•
 service httpd restart
 
-# ƒCƒ“ƒXƒg[ƒ‹I—¹•\¦
+# ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«çµ‚äº†è¡¨ç¤º
 echo "Install Complete"
 
-# ƒVƒFƒ‹ƒXƒNƒŠƒvƒg‚ğÁ–Å‚³‚¹‚é
+# ã‚·ã‚§ãƒ«ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’æ¶ˆæ»…ã•ã›ã‚‹
 rm -f $0
