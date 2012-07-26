@@ -61,22 +61,6 @@ rm -rf /usr/local/src/s3fs-$s3fs_var.tar.gz
 echo $BucketName:$AccessKey:$SecretAccessKey > /etc/passwd-s3fs
 chmod 640 /etc/passwd-s3fs
 
-# Amazon S3マウント、シンボリックリンク作成
-# s3fs <bukketID> /mnt/s3
-mkdir -p /mnt/s3
-s3fs $BucketName /mnt/s3 -o allow_other -o allow_other,default_acl=public-read
-cd /mnt/s3
-mkdir -p /mnt/s3/alminium
-mkdir -p /mnt/s3/files
-mkdir -p /opt/alminium/
-ln -s /mnt/s3/alminium /var/opt/alminium
-ln -s /mnt/s3/files /opt/alminium/files
-
-# 自動マウント設定
-# echo "/usr/bin/s3fs#<Bucket Name> /mnt/s3 fuse allow_other,default_acl=public-read 0 0" >> /etc/fstab
-echo "/usr/bin/s3fs#$BucketName /mnt/s3 fuse allow_other,default_acl=public-read 0 0" >> /etc/fstab
-
-
 #alminiumのインストール
 ## ダウンロード
 cd /usr/local/src
@@ -93,6 +77,23 @@ sed -i -e 's/read USE_DISABLE_SECURITY/USE_DISABLE_SECURITY=Y/' /usr/local/src/a
 ## インストール実行
 cd /usr/local/src/alminium
 bash ./smelt
+
+# Amazon S3マウント、シンボリックリンク作成
+# s3fs <bukketID> /mnt/s3
+mkdir -p /mnt/s3
+s3fs $BucketName /mnt/s3 -o allow_other -o allow_other,default_acl=public-read
+cd /mnt/s3
+# mkdir -p /mnt/s3/alminium
+# mkdir -p /mnt/s3/files
+# mkdir -p /opt/alminium/
+rm -rf /opt/alminium/
+rm -rf /opt/alminium/files
+ln -s /mnt/s3/alminium /var/opt/alminium
+ln -s /mnt/s3/files /opt/alminium/files
+
+# 自動マウント設定
+# echo "/usr/bin/s3fs#<Bucket Name> /mnt/s3 fuse allow_other,default_acl=public-read 0 0" >> /etc/fstab
+echo "/usr/bin/s3fs#$BucketName /mnt/s3 fuse allow_other,default_acl=public-read 0 0" >> /etc/fstab
 
 ## DBをダンプ
 cd /usr/local/src
