@@ -1,6 +1,6 @@
 ## ＜これは何？＞
 
-　GitHubで公開されているRedmineを一発展開できるOSS「ALMinium」を、Amazon S3、Amazon RDS、Amzon SESを利用して高可用構成にしよう！というものです。 リポジトリ保存ディレクトリと、FilesディレクトリがS3に、データベースがRDSに変更されます。使うには各リソースの事前準備が必要です。
+　GitHubで公開されているRedmineを一発展開できるOSS「ALMinium」を、Amazon S3、Amazon RDS、Amzon SESを利用して高可用構成にしよう！というものです。 リポジトリ保存ディレクトリと、FilesディレクトリがS3に、データベースがRDSに、システムメール配信がSESに変更されます。使うには各リソースの事前準備が必要です。
 
 ## ＜事前準備＞
 * Amazon EC2のAmazon Linuxインスタンスを立ち上げてください。(64ビット、スモール以上を推奨)
