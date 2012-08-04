@@ -1,7 +1,24 @@
+# AWS-ALMinium Ver2.0
+
 ## ＜これは何？＞
+　GitHubで公開されているRedmineを一発展開できるOSS「<a href="https://github.com/alminium/alminium">ALMinium</a>」を、Amazon Web Serviceプラットフォームに展開しやすくするようにしたものです。Amazon Linuxインスタンス専用です。
 
-　GitHubで公開されているRedmineを一発展開できるOSS「ALMinium」を、Amazon S3、Amazon RDS、Amzon SESを利用して高可用構成にしよう！というものです。 リポジトリ保存ディレクトリと、FilesディレクトリがS3に、データベースがRDSに、システムメール配信がSESに変更されます。使うには各リソースの事前準備が必要です。
+* EC2インスタンスだけで使うEC2 Stand Alone版と、Amazon S3、Amazon RDS、Amzon SESを利用して高可用構成にするHigh Availability版があります。
+* EC2にログインしてシェルをコピーして実行する方法、EC2起動の時に「UserData」に記述してEC2インスタンスにログインせずとも自動構築できる方法があります。(共通で使えるものにしました)
+* EC2 Stand Alone版はオートスケールができないので、ELBを使わない想定でHTTP版とHTTPS版を準備しています。HTTPS版の証明書は、ALMinium自動インストールの際に設定される「自己証明書」になります。ALMiniumをとりあえず試してみたい方はこちらでどうぞ。
+* ALMinium本体のインストールログが残るようにしました。(/usr/local/src/alminium/ALMinium_Install.log)
+* EC2 Stand Alone版は、ALMiniumをコマンドで導入する時とやっていることは変わらず、メールも設定しません。(「User Data」で利用するときしか価値がないかも)
+* High Availability版は、リポジトリ保存ディレクトリとFilesディレクトリがS3に、データベースがRDSに、システムメール配信がSESに設定されます。使うには各リソースの事前準備が必要です。
 
+# ＜用意されているスクリプト＞
+1. EC2 StandAlone ディレクトリ
+* ALMinium_EC2StandAlone_http.sh (EC2 Stand Alone版 HTTPで構築)
+* ALMinium_EC2StandAlone_https.sh (EC2 Stand Alone版 HTTPSで構築)
+2. High Availability ディレクトリ
+* ALMinium_EC2Install.sh (High Availability版 初回インストール用)
+* ALMinium_EC2Install_Update.sh (High Availability版 アップデート用)
+
+# High Availability版を使うための設定準備
 ## ＜事前準備＞
 * Amazon EC2のAmazon Linuxインスタンスを立ち上げてください。(64ビット、スモール以上を推奨)
 * Amazon S3のバケットをあらかじめ準備しておいてください。
@@ -10,42 +27,53 @@
 
 ## ＜使用するのに必要なパラメーター＞
 
-### Amazon S3の設定用
-* バケット名
-* アクセスキー
-* シークレットアクセスキー
+サービス名 |パラメーター |スクリプト変数名
+-----|-----|-----
+Amazon EC2|ALMiniumのホスト名(URL)|ALMHOSTNAME
+Amazon S３|バケット名|BucketName
+Amazon S３|アクセスキー|AccessKey
+Amazon S３|シークレットアクセスキー|SecretAccessKey
+Amazon RDS|エンドポイント|RDSENDNAME
+Amazon RDS|データベース名|RDSDBNAME
+Amazon RDS|ユーザー名|RDSUser
+Amazon RDS|パスワード|RDSPass
+Amazon SES|SMTPサーバー名|SMTPSERVER
+Amazon SES|SMTPユーザー名(※)|SMTPUser
+Amazon SES|SMTPパスワード(※)|SMTPPass
 
-### Amazon RDSの設定用
-* エンドポイント
-* データベース名
-* ユーザー名
-* パスワード
+* IAM SMTP Credentialsの作成をして取得
 
-### Amazon SESの設定用
-* SMTPサーバー名
-* SMTPユーザー名(IAM SMTP Credentialsの作成をして取得)
-* SMTPパスワード(IAM SMTP Credentialsの作成をして取得)
 
-### ALMiniumサイトのホスト名
-* ホスト名 (例:alminium.example.com)
+## ＜使い方1. EC２インスタンスの中で使う＞
+1. Amazon Linuxでインスタンスを起動します。(スモール以上を推奨)
+2. EC2インスタンスにログインしsudo suコマンドでroot権限ユーザーになります。
+3. /usr/local/src に移動します。
+4. 使いたいスクリプトをダウンロードして転送、もしくは新しいファイルに内容を全部コピーします。
+5. viなどでファイルを開き、スクリプトの最初にある変数を埋めます。変数が何を意味しているかは、＜使用するのに必要なパラメーター＞にある変数名を参照してください。
+6. shコマンドでスクリプトを走らせてください。
 
-## ＜使い方＞
-1. EC2インスタンスにログインしsudoでroot権限ユーザーになります。
-2. /usr/local/src に移動します。
-3. ALMinium_EC2Install.sh をダウンロードして転送、もしくは新しいファイルに内容を全部コピーします。
-4. viなどでファイルを開き、スクリプトの最初にあるAdditional Paramaterにパラメーターを書き込み、変数を埋めます。
-5. sh ALMinium_EC2Install.sh
-6. あとは全自動で、「HTTPで公開された状態」になります。EC2のエンドポイントからアクセスできます。(かなり時間がかかります)
-7. ELBを設定してHTTPS化するなり、オートスケーリングを設定するなりお好きにどうぞ。
+## ＜使い方2. EC２インスタンス作成時に「User Data」に埋め込んで使う＞
+1. EC2インスタンスで、Amazon Linuxを選択してください。
+2. インスタンスサイズは、スモール以上にセットしてください。
+3. 「Edit Ditails」を選択し、「Advanced Detailes」にある「User Data」のBOXの中に、スクリプトをコピーします。
+4. スクリプトの最初にある変数を埋めます。変数が何を意味しているかは、＜使用するのに必要なパラメーター＞にある変数名を参照してください。
+5. そのままインスタンスを立ちあげて、セットアップ完了までのんびりお待ちください。(1時間くらい)
+6. インストールログを確認したい場合、EC２インスタンスにログインし、/var/log/cloud-init.logを確認すれば、初回起動時に行ったセットアップ内容が全て出力されています。
+
+* 「User Data」のBOXが小さいので、テキストエディタ等で先に変数を埋めてからコピーするほうが楽かもしれません。
 
 ### ＜補足＞
-*  HTTPSで公開する方法も模索しソースに一部残っていますが、スケールのことを考えるとEC2はHTTPにしておき、ELBを使用してHTTPSを設定した方がうまくいきます。
-*  s3fsのバージョン指定がありますが、将来バージョンが変更されたときに今のバージョンリンクが消えると困るので、念のため設定用に残してあります。
+* High Availability版はオートスケーリングができます。スクリプトでセットアップ後にEC2インスタンスをAMI化、ELBをセットアップし、オートスケーリングパラメーターをAMI化したインスタンスを利用するようにセットしてください。
+* High Availability版はHTTP版しか準備していません。オートスケールをするにはELBによるオートバランサが必要であり、ELBに証明書をアップロードしてHTTPS化するほうが運用上理にかなっているからです。High Availability版をHTTPS化する場合はELBをセットアップしてください。
+* s3fsのバージョン指定がありますが、将来バージョンが変更されたときに今のバージョンリンクが消えると困るので、念のため設定用に残してあります。
 * メールの設定は、G-mailも使うことができます。TLSはこの時点で有効化されているので、G-mailのサーバー指定とID/Passの設定をしてやれば動きます。
+* EC2の「USER DATA」で使う場合「コメントアウトを認識しない」ため、意図的にコメントを付けない作り方にしています。コメント付きソースの解説は　GitHubのWikiに記述します。
+
+## ＜セキュリティー上の注意＞
+* High Availability版をEC2の「USER DATA」で使う場合、パスワードなども記述することになります。インスタンス上で特定のコマンドを打つと「USER DATA」の情報を引き出される可能性がありますので、インスタンスにログインする人の管理には十分気をつけてください。インストールを実行したインスタンスでない限り見えないので大丈夫だと思いますが、どうしても運用上気になるなら、インスタンスの中でスクリプトを実行してください。スクリプトは最後にサーバー再起動を命令するため自動消滅しません。構築後に書いたスクリプトを消しておくことが重要です。
 
 
-## ＜このスクリプトを使う利点＞
-
+## ＜High Availability版を使う利点＞
 ## 1. Amazon S3と、Amazon RDS の高可用なシステムを使う
 * 「データの消えないストレージ」として設計され進化を続けるS3、ゾーンをまたいだMulti AZ配備ができるRDSと、EC2のEBSよりも高可用に設計されたシステムにデータ部分を移すことで、システムの信頼性が格段に向上します。
 * S3には「容量の制限」という概念が存在せず、使った分だけ支払えば、S3の仕様の限界まで無限拡張可能です。
@@ -62,11 +90,10 @@
 * インストール後に、EBSイメージをAMI化し、ELB配下でオートスケールをさせても動作します。
 
 ## 4. S3をGradinetなどでマウントすれば、バックアップも簡単です
-* リポジトリの中身や、Wikiの画像データなどは、すべてS3の中にありますので、取り出してバックアップすることが簡単にできます。
+* リポジトリの中身や、Wikiの画像データなどは、すべてS3の中にありますので、取り出してバックアップすることが簡単にできます。(ただし、Outboundの転送料がかかります)
 
 ## 5.アップグレードも簡単です
 1. 稼働しているものとは別のEC2インスタンスを準備します。
 2. 同じパラメーターを使って 同じ手順で ALMinium_EC2Install_Update.sh を走らせます。このスクリプトは、初期設定の「DBの設定を移植する」部分を実行せず、ファイルマウントはALMiniumのインストール後の実行となるように変更してあります。
 3. Redmineのバージョンによってうまく動かない場合、RDSでデータベースマイグレーションコマンドを走らせます。(方法はRedmineサイトを参照)
 4. <注意>DBのマイグレーション処理により、「旧バージョンでは動きがおかしくなる」こともあるので、旧バージョンのEC2は止めて実施した方が無難です。
-
