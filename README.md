@@ -13,18 +13,18 @@
 # ＜用意されているスクリプト＞
 1. EC2 StandAlone ディレクトリ
 
-	* ALMinium_EC2StandAlone_http.sh (EC2 Stand Alone版 HTTPで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_http">ソース解説Wiki</a>
-	* ALMinium_EC2StandAlone_https.sh (EC2 Stand Alone版 HTTPSで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_https">ソース解説Wiki</a>
+* ALMinium_EC2StandAlone_http.sh (EC2 Stand Alone版 HTTPで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_http">ソース解説Wiki</a>
+* ALMinium_EC2StandAlone_https.sh (EC2 Stand Alone版 HTTPSで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_https">ソース解説Wiki</a>
 
 2. EC2 StandAlone Mail ディレクトリ
 
-	* ALMinium_EC2StandAlone_Mail_http.sh (EC2 Stand Alone Mailセット版 HTTPで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_Mail_http">ソース解説Wiki</a>
-	* ALMinium_EC2StandAlone_Mail_https.sh (EC2 Stand Alone Mailセット版 HTTPSで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_Mail_https">ソース解説Wiki</a>
+* ALMinium_EC2StandAlone_Mail_http.sh (EC2 Stand Alone Mailセット版 HTTPで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_Mail_http">ソース解説Wiki</a>
+* ALMinium_EC2StandAlone_Mail_https.sh (EC2 Stand Alone Mailセット版 HTTPSで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_Mail_https">ソース解説Wiki</a>
 
 3. High Availability ディレクトリ
 
-	* ALMinium_EC2Install.sh (High Availability版 初回インストール用) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2Install">ソース解説Wiki</a>
-	* ALMinium_EC2Install_Update.sh (High Availability版 アップデート用) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2Install_Update">ソース解説Wiki</a>
+* ALMinium_EC2Install.sh (High Availability版 初回インストール用) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2Install">ソース解説Wiki</a>
+* ALMinium_EC2Install_Update.sh (High Availability版 アップデート用) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2Install_Update">ソース解説Wiki</a>
 
 # High Availability版を使うための設定準備
 ## ＜事前準備＞
