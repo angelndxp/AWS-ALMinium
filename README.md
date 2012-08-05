@@ -1,4 +1,4 @@
-## AWS-ALMinium Ver2.0
+## AWS-ALMinium Ver2.1
 
 ## ＜これは何？＞
 　GitHubで公開されているRedmineを一発展開できるOSS「<a href="https://github.com/alminium/alminium">ALMinium</a>」を、Amazon Web Serviceプラットフォームに展開しやすくするようにしたものです。Amazon Linuxインスタンス専用です。
@@ -13,13 +13,17 @@
 # ＜用意されているスクリプト＞
 1. EC2 StandAlone ディレクトリ
 
-* ALMinium_EC2StandAlone_http.sh (EC2 Stand Alone版 HTTPで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_http">ソース解説Wiki</a>
-* ALMinium_EC2StandAlone_https.sh (EC2 Stand Alone版 HTTPSで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_https">ソース解説Wiki</a>
+	* ALMinium_EC2StandAlone_http.sh (EC2 Stand Alone版 HTTPで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_http">ソース解説Wiki</a>
+	* ALMinium_EC2StandAlone_https.sh (EC2 Stand Alone版 HTTPSで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_https">ソース解説Wiki</a>
 
-2. High Availability ディレクトリ
+2. EC2 StandAlone Mail ディレクトリ
+	* ALMinium_EC2StandAlone_Mail_http.sh (EC2 Stand Alone Mailセット版 HTTPで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_Mail_http">ソース解説Wiki</a>
+	* ALMinium_EC2StandAlone_Mail_https.sh (EC2 Stand Alone Mailセット版 HTTPSで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_Mail_https">ソース解説Wiki</a>
 
-* ALMinium_EC2Install.sh (High Availability版 初回インストール用) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2Install">ソース解説Wiki</a>
-* ALMinium_EC2Install_Update.sh (High Availability版 アップデート用) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2Install_Update">ソース解説Wiki</a>
+3. High Availability ディレクトリ
+
+	* ALMinium_EC2Install.sh (High Availability版 初回インストール用) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2Install">ソース解説Wiki</a>
+	* ALMinium_EC2Install_Update.sh (High Availability版 アップデート用) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2Install_Update">ソース解説Wiki</a>
 
 # High Availability版を使うための設定準備
 ## ＜事前準備＞
@@ -30,19 +34,22 @@
 
 ## ＜使用するのに必要なパラメーター＞
 
-サービス名 |パラメーター |スクリプト変数名
------|-----|-----
-Amazon EC2|ALMiniumのホスト名(URL)|ALMHOSTNAME
-Amazon S３|バケット名|BucketName
-Amazon S３|アクセスキー|AccessKey
-Amazon S３|シークレットアクセスキー|SecretAccessKey
-Amazon RDS|エンドポイント|RDSENDNAME
-Amazon RDS|データベース名|RDSDBNAME
-Amazon RDS|ユーザー名|RDSUser
-Amazon RDS|パスワード|RDSPass
-Amazon SES|SMTPサーバー名|SMTPSERVER
-Amazon SES|SMTPユーザー名(※)|SMTPUser
-Amazon SES|SMTPパスワード(※)|SMTPPass
+サービス名 |パラメーター |スクリプト変数名|備考
+-----|-----|-----|-----
+Amazon EC2|ALMiniumのホスト名(URL)|ALMHOSTNAME|
+Amazon S３|バケット名|BucketName|
+Amazon S３|アクセスキー|AccessKey|
+Amazon S３|シークレットアクセスキー|SecretAccessKey|
+Amazon RDS|エンドポイント|RDSENDNAME|
+Amazon RDS|データベース名|RDSDBNAME|
+Amazon RDS|ユーザー名|RDSUser|
+Amazon RDS|パスワード|RDSPass|
+Amazon SES|SMTPサーバー名|SMTPSERVER|
+Amazon SES|SMTPユーザー名(※)|SMTPUser|
+Amazon SES|SMTPパスワード(※)|SMTPPass|
+G-mail|SMTPサーバー名|SMTPSERVER|EC2 Stand Alone Mailセット版ではデフォルトでセット
+G-mail|SMTPユーザー名(※)|SMTPUser|
+G-mail|SMTPパスワード(※)|SMTPPass|
 
 * IAM SMTP Credentialsの作成をして取得
 
@@ -73,7 +80,7 @@ Amazon SES|SMTPパスワード(※)|SMTPPass
 * EC2の「USER DATA」で使う場合「コメントアウトを認識しない」ため、意図的にコメントを付けない作り方にしています。コメント付きソースの解説は　GitHubのWikiに記述します。
 
 ## ＜セキュリティー上の注意＞
-* High Availability版をEC2の「USER DATA」で使う場合、パスワードなども記述することになります。インスタンス上で特定のコマンドを打つと「USER DATA」の情報を引き出される可能性がありますので、インスタンスにログインする人の管理には十分気をつけてください。インストールを実行したインスタンスでない限り見えないので大丈夫だと思いますが、どうしても運用上気になるなら、インスタンスの中でスクリプトを実行してください。スクリプトは最後にサーバー再起動を命令するため自動消滅しません。構築後に書いたスクリプトを消しておくことが重要です。
+* パスワードを記述するスクリプトをEC2の「USER DATA」で使う場合、インスタンス上で特定のコマンドを打つと「USER DATA」の情報を引き出される可能性があります。インスタンスにログインする人の管理には十分気をつけてください。インストールを実行したインスタンスでない限り見えないので大丈夫だと思いますが、どうしても運用上気になるなら、インスタンスの中でスクリプトを実行してください。スクリプトは最後にサーバー再起動を命令するため自動消滅しません。構築後に書いたスクリプトを消しておくことが重要です。
 
 
 ## ＜High Availability版を使う利点＞
