@@ -1,4 +1,4 @@
-# AWS-ALMinium Ver2.0
+## AWS-ALMinium Ver2.0
 
 ## ＜これは何？＞
 　GitHubで公開されているRedmineを一発展開できるOSS「<a href="https://github.com/alminium/alminium">ALMinium</a>」を、Amazon Web Serviceプラットフォームに展開しやすくするようにしたものです。Amazon Linuxインスタンス専用です。
@@ -12,11 +12,14 @@
 
 # ＜用意されているスクリプト＞
 1. EC2 StandAlone ディレクトリ
-* ALMinium_EC2StandAlone_http.sh (EC2 Stand Alone版 HTTPで構築)
-* ALMinium_EC2StandAlone_https.sh (EC2 Stand Alone版 HTTPSで構築)
+
+* ALMinium_EC2StandAlone_http.sh (EC2 Stand Alone版 HTTPで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_http">ソース解説Wiki</a>
+* ALMinium_EC2StandAlone_https.sh (EC2 Stand Alone版 HTTPSで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_https">ソース解説Wiki</a>
+
 2. High Availability ディレクトリ
-* ALMinium_EC2Install.sh (High Availability版 初回インストール用)
-* ALMinium_EC2Install_Update.sh (High Availability版 アップデート用)
+
+* ALMinium_EC2Install.sh (High Availability版 初回インストール用) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2Install">ソース解説Wiki</a>
+* ALMinium_EC2Install_Update.sh (High Availability版 アップデート用) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2Install_Update">ソース解説Wiki</a>
 
 # High Availability版を使うための設定準備
 ## ＜事前準備＞
@@ -45,7 +48,7 @@ Amazon SES|SMTPパスワード(※)|SMTPPass
 
 
 ## ＜使い方1. EC２インスタンスの中で使う＞
-1. Amazon Linuxでインスタンスを起動します。(スモール以上を推奨)
+1. Amazon Linuxでインスタンスを起動します。(64ビット、スモール以上を推奨)
 2. EC2インスタンスにログインしsudo suコマンドでroot権限ユーザーになります。
 3. /usr/local/src に移動します。
 4. 使いたいスクリプトをダウンロードして転送、もしくは新しいファイルに内容を全部コピーします。
@@ -54,7 +57,7 @@ Amazon SES|SMTPパスワード(※)|SMTPPass
 
 ## ＜使い方2. EC２インスタンス作成時に「User Data」に埋め込んで使う＞
 1. EC2インスタンスで、Amazon Linuxを選択してください。
-2. インスタンスサイズは、スモール以上にセットしてください。
+2. インスタンスサイズは、64ビット、スモール以上にセットしてください。
 3. 「Edit Ditails」を選択し、「Advanced Detailes」にある「User Data」のBOXの中に、スクリプトをコピーします。
 4. スクリプトの最初にある変数を埋めます。変数が何を意味しているかは、＜使用するのに必要なパラメーター＞にある変数名を参照してください。
 5. そのままインスタンスを立ちあげて、セットアップ完了までのんびりお待ちください。(1時間くらい)
