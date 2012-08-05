@@ -17,6 +17,7 @@
 	* ALMinium_EC2StandAlone_https.sh (EC2 Stand Alone版 HTTPSで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_https">ソース解説Wiki</a>
 
 2. EC2 StandAlone Mail ディレクトリ
+
 	* ALMinium_EC2StandAlone_Mail_http.sh (EC2 Stand Alone Mailセット版 HTTPで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_Mail_http">ソース解説Wiki</a>
 	* ALMinium_EC2StandAlone_Mail_https.sh (EC2 Stand Alone Mailセット版 HTTPSで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_Mail_https">ソース解説Wiki</a>
 
