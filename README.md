@@ -49,8 +49,8 @@ Amazon SES|SMTPサーバー名|SMTPSERVER|
 Amazon SES|SMTPユーザー名(※)|SMTPUser|
 Amazon SES|SMTPパスワード(※)|SMTPPass|
 G-mail|SMTPサーバー名|SMTPSERVER|EC2 Stand Alone Mailセット版ではデフォルトでセット
-G-mail|SMTPユーザー名(※)|SMTPUser|
-G-mail|SMTPパスワード(※)|SMTPPass|
+G-mail|SMTPユーザー名|SMTPUser|
+G-mail|SMTPパスワード|SMTPPass|
 
 * IAM SMTP Credentialsの作成をして取得
 
@@ -77,7 +77,6 @@ G-mail|SMTPパスワード(※)|SMTPPass|
 * High Availability版はオートスケーリングができます。スクリプトでセットアップ後にEC2インスタンスをAMI化、ELBをセットアップし、オートスケーリングパラメーターをAMI化したインスタンスを利用するようにセットしてください。
 * High Availability版はHTTP版しか準備していません。オートスケールをするにはELBによるオートバランサが必要であり、ELBに証明書をアップロードしてHTTPS化するほうが運用上理にかなっているからです。High Availability版をHTTPS化する場合はELBをセットアップしてください。
 * s3fsのバージョン指定がありますが、将来バージョンが変更されたときに今のバージョンリンクが消えると困るので、念のため設定用に残してあります。
-* メールの設定は、G-mailも使うことができます。TLSはこの時点で有効化されているので、G-mailのサーバー指定とID/Passの設定をしてやれば動きます。
 * EC2の「USER DATA」で使う場合「コメントアウトを認識しない」ため、意図的にコメントを付けない作り方にしています。コメント付きソースの解説は　GitHubのWikiに記述します。
 
 ## ＜セキュリティー上の注意＞
