@@ -1,5 +1,5 @@
 #!/bin/bash
-ALMHOSTNAME=
+ALM_HOSTNAME=
 BucketName=
 AccessKey=
 SecretAccessKey=
@@ -12,6 +12,8 @@ SMTPUser=
 SMTPPass=
 s3fs_var=1.61
 export HOME=/root
+SSL=N
+USE_DISABLE_SECURITY=Y
 yum -y install subversion make automake gcc libstdc++-devel gcc-c++ fuse fuse-devel curl-devel curl-devel libxml2-devel openssl-devel mailcap
 yum -y install git
 cd /usr/local/src
@@ -35,9 +37,6 @@ ln -s /mnt/s3/files /opt/alminium/files
 echo "/usr/bin/s3fs#$BucketName /mnt/s3 fuse allow_other,default_acl=public-read 0 0" >> /etc/fstab
 cd /usr/local/src
 git clone https://github.com/alminium/alminium.git
-sed -i -e 's/read HOSTNAME/HOSTNAME='"$ALMHOSTNAME"'/' /usr/local/src/alminium/smelt
-sed -i -e 's/read SSL/SSL=N/' /usr/local/src/alminium/smelt
-sed -i -e 's/read USE_DISABLE_SECURITY/USE_DISABLE_SECURITY=Y/' /usr/local/src/alminium/inst-script/rhel6/pre-install
 cd /usr/local/src/alminium
 bash ./smelt > /usr/local/src/alminium/ALMinium_Install.log 2>&1
 cd /usr/local/src

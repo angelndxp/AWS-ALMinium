@@ -12,6 +12,8 @@ SMTPUser=
 SMTPPass=
 s3fs_var=1.61
 export HOME=/root
+SSL=N
+USE_DISABLE_SECURITY=Y
 yum -y install subversion make automake gcc libstdc++-devel gcc-c++ fuse fuse-devel curl-devel curl-devel libxml2-devel openssl-devel mailcap
 yum -y install git
 cd /usr/local/src
@@ -26,9 +28,6 @@ echo $BucketName:$AccessKey:$SecretAccessKey > /etc/passwd-s3fs
 chmod 640 /etc/passwd-s3fs
 cd /usr/local/src
 git clone https://github.com/alminium/alminium.git
-sed -i -e 's/read HOSTNAME/HOSTNAME='"$ALMHOSTNAME"'/' /usr/local/src/alminium/smelt
-sed -i -e 's/read SSL/SSL=N/' /usr/local/src/alminium/smelt
-sed -i -e 's/read USE_DISABLE_SECURITY/USE_DISABLE_SECURITY=Y/' /usr/local/src/alminium/inst-script/rhel6/pre-install
 cd /usr/local/src/alminium
 bash ./smelt > /usr/local/src/alminium/ALMinium_Install.log 2>&1
 mkdir -p /mnt/s3
