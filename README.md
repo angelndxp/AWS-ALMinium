@@ -1,4 +1,4 @@
-## AWS-ALMinium Ver2.1
+## AWS-ALMinium Ver2.2
 
 ## ＜これは何？＞
 　GitHubで公開されているRedmineを一発展開できるOSS「<a href="https://github.com/alminium/alminium">ALMinium</a>」を、Amazon Web Serviceプラットフォームに展開しやすくするようにしたものです。Amazon Linuxインスタンス専用です。
