@@ -63,7 +63,7 @@ echo -e "default:
       tls: true
       address: $SMTPSERVER
       port: 465
-      domain: $ALMHOSTNAME
+      domain: $ALM_HOSTNAME
       authentication: :login
       user_name: $SMTPUser
       password: $SMTPPass" > /opt/alminium/config/configuration.yml
