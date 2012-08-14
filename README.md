@@ -1,4 +1,4 @@
-## AWS-ALMinium Ver2.3
+## AWS-ALMinium Ver2.5
 
 ## ＜これは何？＞
 　GitHubで公開されているRedmineを一発展開できるOSS「<a href="https://github.com/alminium/alminium">ALMinium</a>」を、Amazon Web Serviceプラットフォームに展開しやすくするようにしたものです。Amazon Linuxインスタンス専用です。
@@ -16,15 +16,11 @@
 * ALMinium_EC2StandAlone_http.sh (EC2 Stand Alone版 HTTPで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_http">ソース解説Wiki</a>
 * ALMinium_EC2StandAlone_https.sh (EC2 Stand Alone版 HTTPSで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_https">ソース解説Wiki</a>
 
-2. EC2 StandAlone Mail ディレクトリ
-
-* ALMinium_EC2StandAlone_Mail_http.sh (EC2 Stand Alone Mailセット版 HTTPで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_Mail_http">ソース解説Wiki</a>
-* ALMinium_EC2StandAlone_Mail_https.sh (EC2 Stand Alone Mailセット版 HTTPSで構築) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2StandAlone_Mail_https">ソース解説Wiki</a>
-
-3. High Availability ディレクトリ
+2. High Availability ディレクトリ
 
 * ALMinium_EC2Install.sh (High Availability版 初回インストール用) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2Install">ソース解説Wiki</a>
 * ALMinium_EC2Install_Update.sh (High Availability版 アップデート用) <a href="https://github.com/angelndxp/AWS-ALMinium/wiki/ALMinium_EC2Install_Update">ソース解説Wiki</a>
+
 
 # High Availability版を使うための設定準備
 ## ＜事前準備＞
@@ -33,26 +29,61 @@
 * Amazon RDSを、MySQLでセットアップしておいてください。
 * Amazon SESをセットアップし、メール認証を完了させておいてください。
 
-## ＜使用するのに必要なパラメーター＞
-
-サービス名 |パラメーター |スクリプト変数名|備考
+## ＜使用するのに必要なパラメーターとスクリプトの変数＞
+サービス名 |パラメーター |スクリプト変数名 |備考
 -----|-----|-----|-----
 Amazon EC2|ALMiniumのホスト名(URL)|ALM_HOSTNAME|
-Amazon S３|バケット名|BucketName|
-Amazon S３|アクセスキー|AccessKey|
-Amazon S３|シークレットアクセスキー|SecretAccessKey|
+Amazon S3|バケット名|BucketName|
+Amazon S3|アクセスキー|AccessKey|
+Amazon S3|シークレットアクセスキー|SecretAccessKey|
 Amazon RDS|エンドポイント|RDSENDNAME|
 Amazon RDS|データベース名|RDSDBNAME|
 Amazon RDS|ユーザー名|RDSUser|
 Amazon RDS|パスワード|RDSPass|
-Amazon SES|SMTPサーバー名|SMTPSERVER|
-Amazon SES|SMTPユーザー名(※)|SMTPUser|
-Amazon SES|SMTPパスワード(※)|SMTPPass|
-G-mail|SMTPサーバー名|SMTPSERVER|EC2 Stand Alone Mailセット版ではデフォルトでセット
-G-mail|SMTPユーザー名|SMTPUser|
-G-mail|SMTPパスワード|SMTPPass|
+メール|メール設定を行うかどうかを設定|SMTPSET|メール設定をする[0]/しない[N]
+メール|SMTPサーバー名|SMTPSERVER|
+メール|暗号化が必要かどうかを設定|SMTPTLS|暗号化が必要[Y]/不要[n]
+メール|メール送信ポート番号|SMTPPORT|
+メール|認証(ログイン)が必要かどうかを設定|SMTPLOGIN|認証が必要[Y]/不要[n]
+メール|SMTPユーザー名|SMTPUser|認証が不要な場合は空欄でもよい
+メール|SMTPパスワード|SMTPPass|認証が不要な場合は空欄でもよい
 
-* IAM SMTP Credentialsの作成をして取得
+## ＜メール関連のパラメーター設定について＞
+* 有名なメールプロバイダを使う際の設定です。
+* []のある設定値は固定値です。複数あるものは適切なものを選択してください。
+
+### ・Amazon SESを利用する場合
+変数名 |設定値
+-----|-----
+SMTPSET|[0]
+SMTPSERVER|SMTP Server Name
+SMTPTLS|[Y]
+SMTPPORT|[25 or 465 or 587]
+SMTPLOGIN|[Y]
+SMTPUser|SMTP user name (IAM SMTP Credentialsの作成をして取得)
+SMTPPass|SMTP password (IAM SMTP Credentialsの作成をして取得)
+
+### ・G-Mail/Google Appsを利用する場合
+変数名 |設定値
+-----|-----
+SMTPSET|[0]
+SMTPSERVER|[smtp.gmail.com]
+SMTPTLS|[Y]
+SMTPPORT|[465]
+SMTPLOGIN|[Y]
+SMTPUser|G-Mailのユーザー名
+SMTPPass|G-Mailのパスワード
+
+### ・Windows Live Hotmailを利用する場合
+変数名 |設定値
+-----|-----
+SMTPSET|[0]
+SMTPSERVER|[smtp.live.com]
+SMTPTLS|[n]
+SMTPPORT|[587]
+SMTPLOGIN|[Y]
+SMTPUser|Microsoftアカウント ユーザー名
+SMTPPass|Microsoftアカウント パスワード
 
 
 ## ＜使い方1. EC２インスタンスの中で使う＞
@@ -76,8 +107,8 @@ G-mail|SMTPパスワード|SMTPPass|
 ### ＜補足＞
 * High Availability版はオートスケーリングができます。スクリプトでセットアップ後にEC2インスタンスをAMI化、ELBをセットアップし、オートスケーリングパラメーターをAMI化したインスタンスを利用するようにセットしてください。
 * High Availability版はHTTP版しか準備していません。オートスケールをするにはELBによるオートバランサが必要であり、ELBに証明書をアップロードしてHTTPS化するほうが運用上理にかなっているからです。High Availability版をHTTPS化する場合はELBをセットアップしてください。
-* s3fsのバージョン指定がありますが、将来バージョンが変更されたときに今のバージョンリンクが消えると困るので、念のため設定用に残してあります。
 * EC2の「USER DATA」で使う場合「コメントアウトを認識しない」ため、意図的にコメントを付けない作り方にしています。コメント付きソースの解説は　GitHubのWikiに記述します。
+
 
 ## ＜セキュリティー上の注意＞
 * パスワードを記述するスクリプトをEC2の「USER DATA」で使う場合、インスタンス上で特定のコマンドを打つと「USER DATA」の情報を引き出される可能性があります。インスタンスにログインする人の管理には十分気をつけてください。インストールを実行したインスタンスでない限り見えないので大丈夫だと思いますが、どうしても運用上気になるなら、インスタンスの中でスクリプトを実行してください。スクリプトは最後にサーバー再起動を命令するため自動消滅しません。構築後に書いたスクリプトを消しておくことが重要です。
