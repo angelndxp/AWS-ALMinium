@@ -7,7 +7,11 @@ RDSENDNAME=
 RDSDBNAME=
 RDSUser=
 RDSPass=
+SMTPSET=
 SMTPSERVER=
+SMTPTLS=
+SMTPPORT=
+SMTPLOGIN=
 SMTPUser=
 SMTPPass=
 s3fs_var=1.61
@@ -51,17 +55,6 @@ production:
   encoding: utf8" > /opt/alminium/config/database.yml
 service mysqld stop
 chkconfig mysqld off
-echo -e "default:
- email_delivery:
-    delivery_method: :smtp
-    smtp_settings:
-      tls: true
-      address: $SMTPSERVER
-      port: 465
-      domain: $ALM_HOSTNAME
-      authentication: :login
-      user_name: $SMTPUser
-      password: $SMTPPass" > /opt/alminium/config/configuration.yml
 sed -i -e 's/DBI:mysql:database=alminium;host=localhost/DBI:mysql:database='"$RDSDBNAME"';host='"$RDSENDNAME"'/' /etc/httpd/conf.d/vcs.conf
 sed -i -e 's/RedmineDbUser "alminium"/RedmineDbUser "'"$RDSUser"'"/' /etc/httpd/conf.d/vcs.conf
 sed -i -e 's/RedmineDbPass "alminium"/RedmineDbPass "'"$RDSPass"'"/' /etc/httpd/conf.d/vcs.conf
