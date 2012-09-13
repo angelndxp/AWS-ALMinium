@@ -33,7 +33,7 @@ chmod 640 /etc/passwd-s3fs
 cd /usr/local/src
 git clone https://github.com/alminium/alminium.git
 cd /usr/local/src/alminium
-bash ./smelt > /usr/local/src/alminium/ALMinium_Install.log 2>&1
+source ./smelt > /usr/local/src/alminium/ALMinium_Install.log 2>&1
 mkdir -p /mnt/s3
 s3fs $BucketName /mnt/s3 -o allow_other -o allow_other,default_acl=public-read
 cd /mnt/s3

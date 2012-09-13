@@ -42,7 +42,7 @@ echo "/usr/bin/s3fs#$BucketName /mnt/s3 fuse allow_other,default_acl=public-read
 cd /usr/local/src
 git clone https://github.com/alminium/alminium.git
 cd /usr/local/src/alminium
-bash ./smelt > /usr/local/src/alminium/ALMinium_Install.log 2>&1
+source ./smelt > /usr/local/src/alminium/ALMinium_Install.log 2>&1
 cd /usr/local/src
 mysqldump -u root alminium > /usr/local/src/dump.sql
 mysql -h "$RDSENDNAME" "$RDSDBNAME" -u"$RDSUser"  -p"$RDSPass" < /usr/local/src/dump.sql
