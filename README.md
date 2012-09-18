@@ -96,6 +96,17 @@ SMTPLOGIN|(空欄)
 SMTPUser|(空欄)
 SMTPPass|(空欄)
 
+### ・メール設定がいらないとき
+変数名 |設定値
+-----|-----
+SMTPSET|[N]
+SMTPSERVER|(空欄)
+SMTPTLS|(空欄)
+SMTPPORT|(空欄)
+SMTPLOGIN|(空欄)
+SMTPUser|(空欄)
+SMTPPass|(空欄)
+
 
 ## ＜使い方1. EC２インスタンスの中で使う＞
 1. Amazon Linuxでインスタンスを起動します。(64ビット、スモール以上を推奨)
