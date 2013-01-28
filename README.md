@@ -1,4 +1,4 @@
-## AWS-ALMinium Ver2.5
+## AWS-ALMinium Ver2.6
 
 ## ＜これは何？＞
 　GitHubで公開されているRedmineを一発展開できるOSS「<a href="https://github.com/alminium/alminium">ALMinium</a>」を、Amazon Web Serviceプラットフォームに展開しやすくするようにしたものです。Amazon Linuxインスタンス専用です。
@@ -69,7 +69,7 @@ SMTPPass|SMTP password (IAM SMTP Credentialsの作成をして取得)
 SMTPSET|[0]
 SMTPSERVER|[smtp.gmail.com]
 SMTPTLS|[Y]
-SMTPPORT|[465]
+SMTPPORT|[587]
 SMTPLOGIN|[Y]
 SMTPUser|G-Mailのユーザー名
 SMTPPass|G-Mailのパスワード
