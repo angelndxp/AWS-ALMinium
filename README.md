@@ -160,3 +160,8 @@ SMTPPass|(空欄)
 2. 同じパラメーターを使って 同じ手順で ALMinium_EC2Install_Update.sh を走らせます。このスクリプトは、初期設定の「DBの設定を移植する」部分を実行せず、ファイルマウントはALMiniumのインストール後の実行となるように変更してあります。
 3. Redmineのバージョンによってうまく動かない場合、RDSでデータベースマイグレーションコマンドを走らせます。(方法はRedmineサイトを参照)
 4. <注意>DBのマイグレーション処理により、「旧バージョンでは動きがおかしくなる」こともあるので、旧バージョンのEC2は止めて実施した方が無難です。
+
+
+## LICENSE
+  This software is "GNU General Public License v2.0" license.
+  Please see "LICENSE.txt".
