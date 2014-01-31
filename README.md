@@ -162,6 +162,15 @@ SMTPPass|(空欄)
 4. <注意>DBのマイグレーション処理により、「旧バージョンでは動きがおかしくなる」こともあるので、旧バージョンのEC2は止めて実施した方が無難です。
 
 
-## LICENSE
-  This software is "GNU General Public License v2.0" license.
+## ライセンス
+　ALMiniumは、Redmine,Git,Jenkinsを初め様々なオープンソースソース ソフトウェアをセットアップしてインストールするツールです。 インストールしたソフトウェアについては、個々のライセンスに 従います。
+
+　ALMiniumが「修正BSDライセンス」で提供されているため、AWS-ALMiniumも同じく「修正BSDライセンス」で提供いたします。
+　詳しくは、「LICENSE.txt」をご覧ください。
+
+　Original ALMinium's license is "The BSD 2-Clause License" license.
+  So that, this software is "The BSD 2-Clause License" license.
   Please see "LICENSE.txt".
+
+Copyright (c) 2012-2014, angelndxp
+All rights reserved.
